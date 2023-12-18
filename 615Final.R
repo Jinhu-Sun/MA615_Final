@@ -9,6 +9,7 @@ library(sf)
 library(dplyr)
 
 populationData <- read.csv('cleaned.csv', skip = 1)
+WaterWithdraw <- read.csv('Freshwater.csv', header = TRUE)
 
 ui <- fluidPage(
   titlePanel("Interactive Map with Shiny"),
@@ -31,17 +32,21 @@ ui <- fluidPage(
         ),
         tabPanel("Key Demographics",
                  plotOutput("populationPlot"),
-                 p("The population starts at a lower value, presumably around 700,000 before 1960, and increases steadily until it reaches a point just over 1,100,000 after 2020. "),
+                 p("The population starts at a lower value, presumably around 700,000 before 1960, and increases steadily until it reaches a point just over 1,200,000 after 2020. "),
         ),
         tabPanel("Tourism",
                  h3("Tourism Highlights"),
-                 img(src = "tour.jpg, height", height = "500px", width = "100%"),
+                 img(src = "tour.jpg", height = "500px", width = "100%"),
                  p("The chart above came from https://www.cystat.gov.cy/en/SubthemeStatistics?id=51 I was not able to find the raw data within the data base. So, I will use a picture of the graph displaied on the website.")
+        ),
+        tabPanel("Environment",
+                 plotOutput("FreshWater"),
+                 p("The graph shows a clear trend in water withdrawals as a percentage of Cyprus's internal freshwater resources. It seems to rise from just over 20% in the early 1980s to a peak of around 30% in the early 1990s.After reaching this peak, the percentage of freshwater withdrawals begins to decline steadily until the early 2000s, dropping to around 18%."),
+                 p("From the early 2000s onward, there is significant volatility in the percentage, with sharp increases and decreases. The graph ends with a sharp increase. For an island with limited internal freshwater resources, the amount of rain can significantly affect water availability. A year with low rainfall can lead to higher withdrawal rates from available resources to meet demand.")
         ),
         tabPanel("SWOT Analysis",
                  h3("SWOT Analysis for Cyprus"),
-                 tags$img(src = "SWOTanalysisForCyprus.png, height", height = "500px", width = "100%"),
-                 p("The chart above came from https://www.cystat.gov.cy/en/SubthemeStatistics?id=51 I was not able to find the raw data within the data base. So, I will use a picture of the graph displaied on the website.")
+                 tags$img(src = "SWOTanalysisForCyprus.png", height = "700px", width = "100%")
         )
       )
     )
@@ -90,8 +95,6 @@ server <- function(input, output) {
     }
   })
   
-  # ... existing server logic ...
-  
   output$populationPlot <- renderPlot({
     selectedCountry <- c("Cyprus")
     
@@ -114,6 +117,22 @@ server <- function(input, output) {
            y = "Population")
     
     p
+  })
+  
+  output$FreshWater <- renderPlot({
+    
+    WaterWithdraw$Years <- c(1975:2020)
+    
+    # Plotting the data
+    Q <- ggplot(WaterWithdraw, aes(x = Years, y = Cyprus)) +  # make sure you use 'Population' here
+      geom_line() + 
+      geom_point() +
+      theme_minimal() +
+      labs(title = paste("Annual freshwater withdrawals, total (% of internal resources) - Cyprus"),
+           x = "Year", 
+           y = "Water Withdraw in Total %")
+    
+    Q
   })
   
 }
