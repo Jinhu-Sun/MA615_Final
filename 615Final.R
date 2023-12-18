@@ -37,7 +37,8 @@ ui <- fluidPage(
         tabPanel("Tourism",
                  h3("Tourism Highlights"),
                  img(src = "tour.jpg", height = "500px", width = "100%"),
-                 p("The chart above came from https://www.cystat.gov.cy/en/SubthemeStatistics?id=51 I was not able to find the raw data within the data base. So, I will use a picture of the graph displaied on the website.")
+                 p("The chart above came from https://www.cystat.gov.cy/en/SubthemeStatistics?id=51 I was not able to find the raw data within the data base. So, I will use a picture of the graph displaied on the website."),
+                 p("As we can see frm the graph, tourism is very constant in Cyprus until we hit the pandemic in 2020. This could have a huge impact on the country's economy.")
         ),
         tabPanel("Environment",
                  plotOutput("FreshWater"),
@@ -47,7 +48,13 @@ ui <- fluidPage(
         tabPanel("SWOT Analysis",
                  h3("SWOT Analysis for Cyprus"),
                  tags$img(src = "SWOTanalysisForCyprus.png", height = "700px", width = "100%")
-        )
+        ),
+        tabPanel("Reference",
+                 p("Total Population: https://data.worldbank.org/indicator/SP.POP.TOTL?locations=CY"),
+                 p("Tourism: https://www.cystat.gov.cy/en/SubthemeStatistics?id=51"),
+                 p("Fresh water: https://data.worldbank.org/indicator/ER.H2O.FWTL.ZS?locations=CY"),
+                 p("Key facts and Description of the island are generated with the help of chat-gpt")
+        ),
       )
     )
   )
